@@ -58,6 +58,7 @@
     .btn-back { background: transparent; color: #fff; border-color: rgba(255,255,255,.5); }
     .btn-back:hover { background: rgba(255,255,255,.15); }
 
+    @media (max-width: 340px) { .top .brand-tag { display: none; } }
     .intro .logo { width: clamp(110px, 16vw, 150px); border-radius: 50%; background: #fff; padding: 4px; margin-bottom: 26px; box-shadow: 0 20px 50px rgba(58,6,17,.4); }
     .intro h1 { margin: 0 0 18px; font-size: clamp(2.4rem, 7vw, 5rem); }
     .intro p { font-size: clamp(.98rem, 1.15vw, 1.1rem); line-height: 1.65; color: rgba(255,255,255,.9); max-width: 60ch; white-space: pre-line; margin: 0; }
@@ -80,7 +81,7 @@
     .review span { text-align: right; font-weight: 700; word-break: break-word; }
     .review button { all: unset; cursor: pointer; font-size: 13px; text-decoration: underline; color: var(--saffron); margin-left: 10px; }
     @media (max-width: 640px) {
-      .top .brand-tag { display: none; } .hint { display: none; }
+      .top .brand img { width: 60px; height: 60px; } .top .brand-tag { font-size: 9px; } .count { white-space: nowrap; font-size: 13px; } .hint { display: none; }
       /* keep OK / Back reachable on long option lists */
       .actions { position: sticky; bottom: 0; margin-inline: calc(-1 * var(--gutter)); padding: 14px var(--gutter) 16px; background: linear-gradient(to bottom, rgba(193,17,47,0), var(--crimson) 35%); z-index: 5; }
     }

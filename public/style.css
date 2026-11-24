@@ -76,6 +76,7 @@ input[type=checkbox], input[type=radio] { width: 18px; height: 18px; margin: 0; 
 .mega .l { display: block; animation: rise .9s var(--ease) both; }
 .mega .l:nth-child(2) { animation-delay: .08s; }
 .mega .l:nth-child(3) { animation-delay: .16s; }
+.hero-logo { display: none; }
 .hash { color: var(--saffron); display: inline-block; transform: rotate(-10deg) translateY(-.05em); margin-right: .03em; }
 @keyframes rise { from { opacity: 0; transform: translateY(40px); } }
 
@@ -218,7 +219,10 @@ a.glass:hover { translate: 0 -6px; }
 }
 @media (max-width: 640px) {
   .hero { min-height: 0; padding-bottom: 72px; }
-  .brand-tag { display: none; }
+  .brand img { width: 60px; height: 60px; }
+  .brand-tag { font-size: 10px; }
+  .nav > .btn-ghost { display: none; } /* the Forms pill and the round badge already lead to the form */
+  .hero-logo { display: block; width: 120px; height: 120px; margin: 0 auto 18px; border-radius: 50%; background: #fff; padding: 5px; box-shadow: 0 16px 40px rgba(58,6,17,.4); position: relative; z-index: 2; }
   .mega { font-size: 9.6vw; }
   .mega .l { white-space: nowrap; }
   .stage { padding-bottom: 250px; }
