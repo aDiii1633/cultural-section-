@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Join · Cultural Section</title>
+  <meta name="theme-color" content="#C1112F">
+  <link rel="icon" href="logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,700..900&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      min-height: 100svh; display: flex; flex-direction: column; color: #fff;
+      background-color: var(--crimson);
+      background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+      background-size: 64px 64px; background-position: center top;
+    }
+    .top { position: sticky; top: 0; z-index: 10; background: rgba(147,12,36,.82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .top-in { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+    .top .brand img { width: 52px; height: 52px; }
+    .count { font-weight: 600; font-size: 14px; opacity: .9; }
+    .progress { height: 4px; background: rgba(255,255,255,.18); }
+    .progress span { display: block; height: 100%; width: 0; background: var(--saffron); transition: width .5s var(--ease); }
+
+    .fstage { flex: 1; display: grid; place-items: center; padding: clamp(32px, 6vw, 72px) var(--gutter); overflow: hidden; }
+    .step { width: min(100%, 760px); }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; color: var(--saffron); font-size: 15px; margin-bottom: 14px; }
+    .eyebrow .n { display: grid; place-items: center; min-width: 32px; height: 32px; padding: 0 8px; border-radius: 10px; background: var(--saffron); color: var(--ink); font-family: var(--display); font-stretch: 125%; font-weight: 900; font-size: 13px; }
+    .q { margin: 0 0 10px; font-family: var(--display); font-stretch: 112%; font-weight: 800; font-size: clamp(1.7rem, 4.4vw, 3rem); line-height: 1.08; letter-spacing: -.01em; }
+    .q .req { color: var(--saffron); }
+    .help { margin: 0 0 26px; color: rgba(255,255,255,.82); font-size: 1.05rem; }
+    .answer input:not([type=checkbox]):not([type=radio]), .answer textarea {
+      background: transparent; color: #fff; border: 0; border-bottom: 2px solid rgba(255,255,255,.55); border-radius: 0;
+      padding: 10px 2px; font-size: clamp(1.25rem, 2.6vw, 1.7rem); min-height: 0;
+    }
+    .answer input::placeholder, .answer textarea::placeholder { color: rgba(255,255,255,.45); }
+    .answer input:focus, .answer textarea:focus { box-shadow: none; border-bottom-color: var(--saffron); }
+    .answer input[type=date] { color-scheme: dark; }
+    .answer textarea { min-height: 140px; border: 2px solid rgba(255,255,255,.55); border-radius: 16px; padding: 14px 16px; font-size: 1.15rem; }
+    .answer textarea:focus { border-color: var(--saffron); }
+
+    .opts { display: grid; gap: 10px; max-width: 560px; }
+    .opt { display: flex; align-items: center; gap: 14px; width: 100%; min-height: 56px; padding: 10px 16px; border-radius: 16px; border: 2px solid rgba(255,255,255,.5); background: rgba(255,255,255,.1); color: #fff; font: 600 1.05rem var(--body); text-align: left; cursor: pointer; transition: background-color .2s, border-color .2s, transform .15s; }
+    .opt:hover { background: rgba(255,255,255,.2); }
+    .opt:active { transform: scale(.98); }
+    .opt[aria-checked=true] { background: #fff; color: var(--crimson); border-color: #fff; }
+    .opt .key { display: grid; place-items: center; width: 28px; height: 28px; flex: none; border-radius: 8px; border: 1.5px solid currentColor; font-size: 13px; font-weight: 800; }
+    .opt[aria-checked=true] .key { background: var(--crimson); color: #fff; border-color: var(--crimson); }
+    .opt .tick { margin-left: auto; opacity: 0; font-weight: 900; }
+    .opt[aria-checked=true] .tick { opacity: 1; }
+
+    .actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+    .hint { font-size: 13px; opacity: .75; }
+    .hint kbd { font: inherit; font-weight: 700; }
+    .err { margin: 14px 0 0; min-height: 1.4em; color: var(--saffron); font-weight: 700; }
+    .btn-back { background: transparent; color: #fff; border-color: rgba(255,255,255,.5); }
+    .btn-back:hover { background: rgba(255,255,255,.15); }
+
+    .intro .logo { width: clamp(110px, 16vw, 150px); border-radius: 50%; background: #fff; padding: 4px; margin-bottom: 26px; box-shadow: 0 20px 50px rgba(58,6,17,.4); }
+    .intro h1 { margin: 0 0 18px; font-size: clamp(2.4rem, 7vw, 5rem); }
+    .intro p { font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: rgba(255,255,255,.9); max-width: 60ch; white-space: pre-line; margin: 0; }
+    .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+    .meta span { background: rgba(255,255,255,.14); border-radius: 999px; padding: 8px 14px; font-size: 14px; font-weight: 600; }
+    .chooser { display: grid; gap: 12px; margin-top: 26px; }
+    .chooser a { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 22px; border-radius: 18px; background: #fff; color: var(--ink); text-decoration: none; font-weight: 700; transition: translate .2s var(--ease); }
+    .chooser a:hover { translate: 6px 0; }
+    .chooser a span { color: var(--crimson); }
+    .done h1 { font-size: clamp(2.6rem, 8vw, 5.4rem); margin: 0 0 16px; }
+    .done h1 span { color: var(--saffron); }
+    .review { margin: 26px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; max-height: 46vh; overflow: auto; }
+    .review li { display: flex; gap: 16px; justify-content: space-between; align-items: baseline; padding: 12px 16px; border-radius: 14px; background: rgba(255,255,255,.1); }
+    .review b { font-weight: 600; opacity: .85; font-size: 14px; }
+    .review span { text-align: right; font-weight: 700; word-break: break-word; }
+    .review button { all: unset; cursor: pointer; font-size: 13px; text-decoration: underline; color: var(--saffron); margin-left: 10px; }
+    @media (max-width: 640px) { .top .brand-tag { display: none; } .hint { display: none; } }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-in">
+      <a class="brand" href="/" aria-label="Back to Cultural Section website">
+        <img src="logo.jpg" alt="Cultural Section logo" width="52" height="52">
+        <span class="brand-tag"><b>CULTURAL</b><i>SECTION</i></span>
+      </a>
+      <span class="count" id="count" aria-live="polite"></span>
+    </div>
+    <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+  </header>
+
+  <main class="fstage" id="stage"><p>Loading…</p></main>
+
+<script>
+const $ = s => document.querySelector(s);
+function h(tag, props = {}, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (k === 'class') el.className = v;
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else if (k === 'value') el.value = v ?? '';
+    else if (v === true) el.setAttribute(k, '');
+    else if (v !== false && v != null) el.setAttribute(k, v);
+  }
+  el.append(...kids.flat().filter(k => k != null && k !== false));
+  return el;
+}
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const KEYS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const isChoice = f => f.type === 'radio' || f.type === 'select' || (f.type === 'checkbox' && f.options.length);
+const isMulti = f => f.type === 'checkbox' && f.options.length;
+
+let form, step = 0, answers = {}, busy = false;
+// steps: 0 = about/intro, 1..n = questions, n+1 = review
+const total = () => form.fields.length;
+const draftKey = () => 'cs_draft_' + form.id;
+const saveDraft = () => { try { sessionStorage.setItem(draftKey(), JSON.stringify(answers)); } catch {} };
+
+// ---------- boot ----------
+(async function boot() {
+  const id = new URLSearchParams(location.search).get('f');
+  try {
+    if (id) return start(await getJson('/api/forms/' + encodeURIComponent(id)));
+    const { forms } = await getJson('/api/site');
+    if (!forms.length) return message('No open forms', 'There are no forms accepting responses right now. Check the news on the website.');
+    if (forms.length === 1) return start(await getJson('/api/forms/' + forms[0].id));
+    chooser(forms);
+  } catch (e) { message('Form not available', e.message); }
+})();
+
+async function getJson(url) {
+  const res = await fetch(url);
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Could not load the form. Please refresh.');
+  return data;
+}
+
+function show(el, dir = 1) {
+  const stage = $('#stage');
+  const old = stage.firstElementChild;
+  const enter = () => {
+    stage.replaceChildren(el);
+    if (!reduced) el.animate([{ opacity: 0, transform: `translateY(${dir * 48}px)` }, { opacity: 1, transform: 'none' }], { duration: 480, easing: 'cubic-bezier(.2,.7,.2,1)' });
+    const focus = el.querySelector('[data-autofocus]');
+    if (focus) focus.focus({ preventScroll: true });
+    busy = false;
+  };
+  busy = true;
+  if (!old || reduced) return enter();
+  old.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translateY(${dir * -48}px)` }], { duration: 260, easing: 'ease-in', fill: 'forwards' });
+  setTimeout(enter, 260); // timer, not onfinish: animation events don't fire while the tab is hidden
+}
+
+function setProgress() {
+  const n = total();
+  const qStep = Math.min(Math.max(step, 0), n);
+  $('#bar').style.width = (step > n ? 100 : (qStep / n) * 100) + '%';
+  $('#count').textContent = step === 0 ? `${n} questions` : step <= n ? `Question ${step} of ${n}` : 'Review';
+}
+
+function message(title, text) {
+  $('#count').textContent = '';
+  show(h('section', { class: 'step intro' },
+    h('img', { class: 'logo', src: 'logo.jpg', alt: '' }),
+    h('h1', { class: 'display' }, title), h('p', {}, text),
+    h('div', { class: 'actions' }, h('a', { class: 'btn btn-saffron', href: '/' }, '← Back to website'))));
+}
+
+function chooser(forms) {
+  $('#count').textContent = `${forms.length} open forms`;
+  show(h('section', { class: 'step intro' },
+    h('img', { class: 'logo', src: 'logo.jpg', alt: '' }),
+    h('h1', { class: 'display' }, 'Pick a form'),
+    h('p', {}, 'Choose what you want to sign up for.'),
+    h('div', { class: 'chooser' }, forms.map(f => h('a', { href: '/form?f=' + f.id }, f.title, h('span', {}, `${f.questions} questions →`))))));
+}
+
+function start(f) {
+  form = f;
+  document.title = `${form.title} · Cultural Section`;
+  try { answers = JSON.parse(sessionStorage.getItem(draftKey()) || '{}'); } catch { answers = {}; }
+  go(0);
+}
+
+function go(to, dir = to >= step ? 1 : -1) {
+  step = to;
+  setProgress();
+  if (step === 0) return show(introView(), dir);
+  if (step <= total()) return show(questionView(form.fields[step - 1]), dir);
+  return show(reviewView(), dir);
+}
+
+// ---------- views ----------
+function introView() {
+  const resumed = Object.keys(answers).length > 0;
+  return h('section', { class: 'step intro' },
+    h('img', { class: 'logo', src: 'logo.jpg', alt: '' }),
+    h('h1', { class: 'display' }, form.title),
+    form.description && h('p', {}, form.description),
+    h('div', { class: 'meta' }, h('span', {}, `${total()} questions`), h('span', {}, `~${Math.max(1, Math.round(total() * 0.3))} min`), h('span', {}, 'One question at a time')),
+    h('div', { class: 'actions' },
+      h('button', { class: 'btn btn-saffron', type: 'button', 'data-autofocus': true, onclick: () => go(1) }, resumed ? 'Continue where you left off →' : 'Start →'),
+      resumed && h('button', { class: 'btn btn-back', type: 'button', onclick: () => { answers = {}; saveDraft(); go(1); } }, 'Start over'),
+      h('span', { class: 'hint' }, 'press ', h('kbd', {}, 'Enter ↵'))));
+}
+
+function questionView(f) {
+  const err = h('p', { class: 'err', role: 'alert' });
+  const n = step;
+  let control;
+
+  if (isChoice(f)) {
+    const multi = isMulti(f);
+    const picked = () => multi ? (answers[f.id] || []) : answers[f.id];
+    control = h('div', { class: 'opts', role: multi ? 'group' : 'radiogroup', 'aria-label': f.label },
+      f.options.map((o, i) => h('button', {
+        class: 'opt', type: 'button', role: multi ? 'checkbox' : 'radio',
+        'aria-checked': String(multi ? picked().includes(o) : picked() === o), 'data-key': KEYS[i],
+        'data-autofocus': i === 0 || null,
+        onclick: e => {
+          err.textContent = '';
+          if (multi) {
+            const set = new Set(picked());
+            set.has(o) ? set.delete(o) : set.add(o);
+            answers[f.id] = f.options.filter(x => set.has(x));
+            e.currentTarget.setAttribute('aria-checked', String(set.has(o)));
+          } else {
+            answers[f.id] = o;
+            control.querySelectorAll('.opt').forEach(b => b.setAttribute('aria-checked', String(b === e.currentTarget)));
+            setTimeout(() => step === n && next(), 320); // auto-advance on single choice
+          }
+          saveDraft();
+        },
+      }, h('span', { class: 'key', 'aria-hidden': 'true' }, KEYS[i]), o, h('span', { class: 'tick', 'aria-hidden': 'true' }, '✓'))));
+  } else if (f.type === 'checkbox') {
+    control = h('div', { class: 'opts' }, h('button', {
+      class: 'opt', type: 'button', role: 'checkbox', 'aria-checked': String(!!answers[f.id]), 'data-autofocus': true,
+      onclick: e => { answers[f.id] = !answers[f.id]; e.currentTarget.setAttribute('aria-checked', String(answers[f.id])); err.textContent = ''; saveDraft(); },
+    }, h('span', { class: 'key', 'aria-hidden': 'true' }, '✓'), 'Yes, I agree'));
+  } else if (f.type === 'textarea') {
+    control = h('textarea', { 'aria-label': f.label, maxlength: 5000, placeholder: 'Type your answer here…', value: answers[f.id], 'data-autofocus': true,
+      oninput: e => { answers[f.id] = e.target.value; saveDraft(); } });
+  } else {
+    control = h('input', {
+      type: f.type, 'aria-label': f.label, maxlength: 5000, value: answers[f.id], 'data-autofocus': true,
+      placeholder: { email: 'name@example.com', tel: '+91 98765 43210', number: '0' }[f.type] || 'Type your answer here…',
+      autocomplete: { email: 'email', tel: 'tel' }[f.type] || (/name/i.test(f.label) ? 'name' : 'off'),
+      inputmode: { tel: 'tel', number: 'decimal', email: 'email' }[f.type],
+      oninput: e => { answers[f.id] = e.target.value; err.textContent = ''; saveDraft(); },
+    });
+  }
+
+  const last = n === total();
+  const view = h('section', { class: 'step', 'data-err': '' },
+    h('div', { class: 'eyebrow' }, h('span', { class: 'n' }, String(n)), '→'),
+    h('h1', { class: 'q' }, f.label, f.required && h('span', { class: 'req', 'aria-label': 'required' }, ' *')),
+    h('p', { class: 'help' }, f.help || (isMulti(f) ? 'Choose as many as you like.' : isChoice(f) ? 'Choose one.' : '')),
+    h('div', { class: 'answer' }, control),
+    err,
+    h('div', { class: 'actions' },
+      h('button', { class: 'btn btn-saffron', type: 'button', onclick: () => next() }, last ? 'Review answers →' : 'OK ✓'),
+      h('button', { class: 'btn btn-back', type: 'button', onclick: () => go(n - 1) }, '← Back'),
+      h('span', { class: 'hint' }, f.type === 'textarea' ? h('span', {}, 'press ', h('kbd', {}, 'Ctrl + Enter ↵')) : isChoice(f) ? h('span', {}, 'press ', h('kbd', {}, KEYS[0] + '–' + KEYS[f.options.length - 1]), ' to pick') : h('span', {}, 'press ', h('kbd', {}, 'Enter ↵')))));
+  view.err = err;
+  return view;
+}
+
+function problem(f) {
+  const v = answers[f.id];
+  const empty = v == null || v === '' || v === false || (Array.isArray(v) && !v.length);
+  if (empty) return f.required ? (isChoice(f) ? 'Please pick an option.' : 'This one is required.') : '';
+  if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).trim())) return 'That email doesn’t look right.';
+  if (f.type === 'number' && !Number.isFinite(Number(v))) return 'Please enter a number.';
+  if (f.type === 'tel' && !/^[+\d][\d\s()-]{6,}$/.test(String(v).trim())) return 'That phone number doesn’t look right.';
+  return '';
+}
+
+function next() {
+  if (busy) return;
+  const f = form.fields[step - 1];
+  const msg = problem(f);
+  if (msg) {
+    const view = $('#stage').firstElementChild;
+    view.err.textContent = msg;
+    if (!reduced) view.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-10px)' }, { transform: 'translateX(10px)' }, { transform: 'translateX(0)' }], { duration: 300 });
+    return;
+  }
+  go(step + 1);
+}
+
+function display(f) {
+  const v = answers[f.id];
+  if (Array.isArray(v)) return v.join(', ') || '—';
+  if (v === true) return 'Yes';
+  return (v ?? '').toString().trim() || '—';
+}
+
+function reviewView() {
+  const err = h('p', { class: 'err', role: 'alert' });
+  const send = h('button', { class: 'btn btn-saffron', type: 'button', 'data-autofocus': true, onclick: submit }, 'Submit ✓');
+  async function submit() {
+    send.disabled = true; send.textContent = 'Sending…'; err.textContent = '';
+    const data = {};
+    for (const f of form.fields) {
+      const v = answers[f.id];
+      data[f.id] = f.type === 'checkbox' ? (f.options.length ? (v || []) : !!v) : (v ?? '').toString();
+    }
+    try {
+      const res = await fetch(`/api/forms/${form.id}/submit`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(out.error || 'Something went wrong. Please try again.');
+      answers = {}; saveDraft();
+      step = total() + 2; $('#bar').style.width = '100%'; $('#count').textContent = 'Done';
+      show(h('section', { class: 'step done' },
+        h('h1', { class: 'display' }, 'Thank ', h('span', {}, 'you!')),
+        h('p', { class: 'help' }, form.thanks || 'Your response has been received.'),
+        h('div', { class: 'actions' },
+          h('a', { class: 'btn btn-saffron', href: '/', 'data-autofocus': true }, '← Back to website'),
+          h('button', { class: 'btn btn-back', type: 'button', onclick: () => go(0, -1) }, 'Fill another response'))));
+    } catch (e) {
+      err.textContent = e.message; send.disabled = false; send.textContent = 'Submit ✓';
+    }
+  }
+  return h('section', { class: 'step' },
+    h('div', { class: 'eyebrow' }, 'Almost done'),
+    h('h1', { class: 'q' }, 'Check your answers'),
+    h('ul', { class: 'review' }, form.fields.map((f, i) => h('li', {},
+      h('b', {}, f.label), h('span', {}, display(f), h('button', { type: 'button', onclick: () => go(i + 1, -1) }, 'Edit'))))),
+    err,
+    h('div', { class: 'actions' }, send, h('button', { class: 'btn btn-back', type: 'button', onclick: () => go(total()) }, '← Back')));
+}
+
+// ---------- keyboard ----------
+document.addEventListener('keydown', e => {
+  if (!form || busy || e.altKey || e.metaKey) return;
+  const inTextarea = e.target.tagName === 'TEXTAREA';
+  if (e.key === 'Enter' && !e.shiftKey && (!inTextarea || e.ctrlKey)) {
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return; // let focused buttons act natively
+    e.preventDefault();
+    if (step === 0) go(1); else if (step <= total()) next();
+    return;
+  }
+  if (step >= 1 && step <= total() && !inTextarea && e.target.tagName !== 'INPUT' && !e.ctrlKey && /^[a-z]$/i.test(e.key)) {
+    const btn = document.querySelector(`.opt[data-key="${e.key.toUpperCase()}"]`);
+    if (btn) { btn.click(); btn.focus(); }
+  }
+});
+</script>
+</body>
+</html>

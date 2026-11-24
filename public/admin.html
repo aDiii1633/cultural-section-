@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin · Cultural Section</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,700..900&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: var(--lav-soft); }
+    .top { background: var(--crimson); color: #fff; }
+    .top-in { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-block: 14px; }
+    .top-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .who { font-size: 14px; opacity: .9; margin-right: 6px; }
+    .top .btn { min-height: 40px; padding: 8px 16px; font-size: 14px; }
+    .main { padding-block: 24px 64px; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .tab { min-height: 44px; padding: 8px 18px; border-radius: 999px; border: 1.5px solid var(--crimson); background: #fff; color: var(--crimson); font: 600 14px var(--body); cursor: pointer; }
+    .tab[aria-pressed=true] { background: var(--crimson); color: #fff; }
+    .card { background: #fff; border-radius: var(--r-lg); padding: clamp(18px, 3vw, 28px); margin-bottom: 16px; }
+    .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+    .bar h2 { margin: 0; font-size: clamp(1.6rem, 4vw, 2.4rem); }
+    .item { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; padding: 16px 0; border-top: 1px solid var(--line); }
+    .item:first-of-type { border-top: 0; }
+    .item strong { font-size: 17px; margin-right: 8px; }
+    .item small { display: block; color: var(--muted); margin-top: 2px; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .actions .btn { min-height: 40px; padding: 8px 14px; font-size: 14px; }
+    .btn-danger { background: #fff; border-color: #F3C4CD; color: var(--crimson); }
+    .btn-danger:hover { background: var(--crimson); color: #fff; border-color: var(--crimson); }
+    .chip { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; vertical-align: middle; margin-right: 4px; }
+    .chip.on { background: #E3F1E7; color: var(--green); }
+    .chip.off { background: #EEE8F2; color: var(--muted); }
+    .chip.bad { background: #FCE9ED; color: var(--crimson); }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .lbl { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
+    .lbl.wide { grid-column: 1 / -1; }
+    .check { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; min-height: 44px; cursor: pointer; }
+    .frow { display: grid; grid-template-columns: 2fr 1fr auto; gap: 12px; align-items: end; padding: 16px; border-radius: var(--r-md); background: var(--lav-soft); margin-bottom: 10px; }
+    .frow .wide { grid-column: 1 / -1; }
+    .frow .row-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .frow .row-actions .btn { min-height: 40px; padding: 6px 12px; font-size: 13px; }
+    .num { font-family: var(--display); font-stretch: 125%; font-weight: 900; color: var(--crimson); }
+    .hint { font-size: 13px; color: var(--muted); margin: 0 0 12px; }
+    .banner { background: var(--saffron); color: var(--ink); border-radius: var(--r-md); padding: 14px 18px; margin-bottom: 16px; font-weight: 600; display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    .conn { border: 1.5px solid var(--line); border-radius: var(--r-md); padding: 18px; margin-top: 14px; }
+    .conn h3 { margin: 0 0 6px; font-size: 1.1rem; }
+    .linkrow { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+    .linkrow input { flex: 1 1 280px; }
+    ol.steps { margin: 10px 0; padding-left: 20px; display: grid; gap: 6px; font-size: 14px; }
+    pre { background: var(--ink); color: #fff; padding: 14px; border-radius: 12px; overflow: auto; font-size: 12.5px; margin: 8px 0; }
+    .table-tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .table-tools input { flex: 1 1 240px; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { background: var(--lav-soft); font-weight: 700; white-space: nowrap; }
+    td { max-width: 320px; white-space: pre-line; }
+    .photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+    .photos figure { margin: 0; background: var(--lav-soft); border-radius: var(--r-md); overflow: hidden; display: flex; flex-direction: column; }
+    .photos img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .photos figcaption { padding: 8px; display: grid; gap: 6px; }
+    .photos input { min-height: 38px !important; padding: 6px 10px !important; font-size: 13px; }
+    .photos .actions .btn { min-height: 34px; padding: 4px 10px; font-size: 12px; }
+    .perms { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 4px 16px; font-weight: 400; }
+    .login { min-height: 100vh; display: grid; place-items: center; padding: 16px; background: var(--crimson); }
+    .login form { background: #fff; border-radius: 32px; padding: 36px 28px; width: min(100%, 380px); text-align: center; display: grid; gap: 12px; }
+    .login img { width: 88px; margin: 0 auto; }
+    .login h1 { margin: 0 0 6px; font-size: 1.6rem; }
+    .err { color: var(--crimson); font-weight: 600; min-height: 1.4em; margin: 0; }
+    #toast { position: fixed; left: 50%; bottom: 20px; translate: -50% 0; background: var(--ink); color: #fff; padding: 12px 20px; border-radius: 999px; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 50; max-width: calc(100% - 32px); }
+    #toast.show { opacity: 1; }
+    #toast.bad { background: var(--crimson); }
+    @media (max-width: 700px) { .grid2, .frow { grid-template-columns: 1fr; } .who { display: none; } }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+function h(tag, props = {}, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (k === 'class') el.className = v;
+    else if (k.startsWith('on')) { if (v) el.addEventListener(k.slice(2), v); }
+    else if (k === 'value') el.value = v ?? '';
+    else if (k === 'checked' || k === 'selected') el[k] = !!v;
+    else if (v === true) el.setAttribute(k, '');
+    else if (v !== false && v != null) el.setAttribute(k, v);
+  }
+  el.append(...kids.flat().filter(k => k != null && k !== false));
+  return el;
+}
+const btn = (label, onclick, cls = 'btn-line', type = 'button') => h('button', { class: 'btn ' + cls, type, onclick }, label);
+const store = {
+  get() { try { return sessionStorage.getItem('cs_admin') || ''; } catch { return ''; } },
+  set(v) { try { v ? sessionStorage.setItem('cs_admin', v) : sessionStorage.removeItem('cs_admin'); } catch {} },
+};
+let toastTimer;
+function toast(msg, bad = false) {
+  const t = $('#toast');
+  t.textContent = msg; t.className = 'show' + (bad ? ' bad' : '');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.className = '', 3200);
+}
+const fmt = iso => iso ? new Date(iso).toLocaleString() : '';
+
+let token = store.get();
+let state = null;     // { me, perms, announcements, photos, forms, counts }
+let view = '';
+let current = null;   // form being edited, or { form, responses }
+const can = p => state.me.perms.includes(p);
+
+const PERM_LABELS = {
+  forms: 'Create & edit forms', responses: 'View, export & delete responses', connections: 'Excel / Google Sheets connections',
+  news: 'Post & edit announcements', photos: 'Upload & manage photos', users: 'Manage team & roles',
+};
+const ROLES = {
+  'Owner (everything)': ['forms', 'responses', 'connections', 'news', 'photos', 'users'],
+  'Editor': ['forms', 'responses', 'news', 'photos'],
+  'Data manager': ['responses', 'connections'],
+  'Content manager': ['news', 'photos'],
+  'Responses viewer': ['responses'],
+};
+const roleOf = perms => Object.entries(ROLES).find(([, p]) => p.length === perms.length && p.every(x => perms.includes(x)))?.[0] || 'Custom';
+
+async function api(url, method = 'GET', body) {
+  const res = await fetch(url, {
+    method, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+    body: body && JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (res.status === 401 && url !== '/api/admin/login') { token = ''; store.set(''); showLogin('Session expired — please log in again.'); throw new Error('Logged out'); }
+  if (!res.ok) throw new Error(data.error || 'Something went wrong');
+  return data;
+}
+// run an action; show any error as a toast
+const act = fn => async (...a) => { try { await fn(...a); } catch (e) { if (e.message !== 'Logged out') toast(e.message, true); } };
+const confirmAct = (msg, fn) => act(async (...a) => { if (confirm(msg)) await fn(...a); });
+
+// ---------- login ----------
+function showLogin(msg = '') {
+  const user = h('input', { autocomplete: 'username', required: true, 'aria-label': 'Username', placeholder: 'Username' });
+  const pw = h('input', { type: 'password', autocomplete: 'current-password', required: true, 'aria-label': 'Password', placeholder: 'Password' });
+  const err = h('p', { class: 'err', role: 'alert' }, msg);
+  const go = h('button', { class: 'btn btn-crimson', type: 'submit' }, 'Log in');
+  $('#root').replaceChildren(h('div', { class: 'login' },
+    h('form', { onsubmit: async e => {
+      e.preventDefault(); go.disabled = true; err.textContent = '';
+      try {
+        token = (await api('/api/admin/login', 'POST', { username: user.value, password: pw.value })).token;
+        store.set(token); start();
+      } catch (e2) { err.textContent = e2.message; go.disabled = false; pw.select(); }
+    } },
+      h('img', { src: 'logo.jpg', alt: 'Cultural Section logo' }),
+      h('h1', { class: 'display' }, 'Admin'),
+      user, pw, go, err,
+      h('a', { href: '/', class: 'hint' }, '← Back to website'))));
+  user.focus();
+}
+
+const TABS = [
+  ['forms', 'Forms & responses', () => can('forms') || can('responses')],
+  ['connections', 'Excel & Sheets', () => can('connections')],
+  ['news', 'Announcements', () => can('news')],
+  ['photos', 'Photos', () => can('photos')],
+  ['team', 'Team & roles', () => can('users')],
+  ['account', 'My account', () => true],
+];
+
+async function start() {
+  try { state = await api('/api/admin/state'); } catch { return; }
+  const tabs = TABS.filter(([, , ok]) => ok());
+  if (!tabs.some(([k]) => k === view)) view = tabs[0][0];
+  $('#root').replaceChildren(
+    h('header', { class: 'top' }, h('div', { class: 'wrap top-in' },
+      h('a', { class: 'brand', href: '/' }, h('img', { src: 'logo.jpg', alt: '', width: 44, height: 44 }), h('span', { class: 'brand-tag' }, h('b', {}, 'CULTURAL'), h('i', {}, 'ADMIN'))),
+      h('div', { class: 'top-actions' },
+        h('span', { class: 'who' }, `${state.me.name} · ${roleOf(state.me.perms)}`),
+        h('a', { class: 'btn btn-ghost', href: '/', target: '_blank', rel: 'noopener' }, 'View site'),
+        btn('Log out', act(async () => { await api('/api/admin/logout', 'POST'); token = ''; store.set(''); showLogin(); }), 'btn-saffron')))),
+    h('div', { class: 'wrap main' },
+      state.me.defaultPassword && h('div', { class: 'banner', role: 'alert' }, 'You are still using the default password. Change it before sharing the site.', btn('Change now', () => go('account'), 'btn-crimson')),
+      h('nav', { class: 'tabs', 'aria-label': 'Admin sections' },
+        tabs.map(([k, t]) => h('button', { class: 'tab', type: 'button', 'data-tab': k, onclick: () => go(k) }, t))),
+      h('main', { id: 'main' })));
+  render();
+}
+async function refresh() { state = await api('/api/admin/state'); render(); }
+function go(v) { view = v; render(); window.scrollTo(0, 0); }
+function render() {
+  const tab = ['editor', 'responses'].includes(view) ? 'forms' : view;
+  document.querySelectorAll('[data-tab]').forEach(t => t.setAttribute('aria-pressed', t.dataset.tab === tab));
+  Promise.resolve(views[view]()).then(el => $('#main').replaceChildren(el)).catch(e => { if (e.message !== 'Logged out') toast(e.message, true); });
+}
+
+// ---------- views ----------
+const FIELD_TYPES = [['text', 'Short text'], ['textarea', 'Long text'], ['email', 'Email'], ['tel', 'Phone'], ['number', 'Number'], ['date', 'Date'], ['radio', 'Pick one'], ['checkbox', 'Pick many / agree box'], ['select', 'Dropdown (pick one)']];
+const formLink = f => `${location.origin}/form?f=${f.id}`;
+const csvLink = f => `${location.origin}/export/${f.id}.csv?key=${f.exportKey}`;
+const copy = (text, msg = 'Copied') => act(async () => { await navigator.clipboard.writeText(text); toast(msg); });
+
+const views = {
+  forms() {
+    return h('section', { class: 'card' },
+      h('div', { class: 'bar' }, h('h2', { class: 'display' }, 'Forms'),
+        can('forms') && btn('+ New form', () => {
+          current = { title: '', description: '', thanks: '', active: true, fields: [{ label: 'What is your full name?', type: 'text', required: true, options: [], help: '' }] };
+          go('editor');
+        }, 'btn-crimson')),
+      h('p', { class: 'hint' }, 'Every form opens on its own page, one question at a time. Copy the link to share it anywhere.'),
+      state.forms.length ? state.forms.map(f => h('div', { class: 'item' },
+        h('div', {},
+          h('strong', {}, f.title), h('span', { class: 'chip ' + (f.active ? 'on' : 'off') }, f.active ? 'Open' : 'Closed'),
+          h('small', {}, `${state.counts[f.id] || 0} responses · ${f.fields.length} questions`)),
+        h('div', { class: 'actions' },
+          can('responses') && btn('Responses', act(async () => { current = await api(`/api/admin/forms/${f.id}/responses`); go('responses'); }), 'btn-crimson'),
+          f.active && btn('Copy link', copy(formLink(f), 'Form link copied')),
+          f.active && h('a', { class: 'btn btn-line', href: formLink(f), target: '_blank', rel: 'noopener' }, 'Preview'),
+          can('forms') && btn('Edit', () => { current = structuredClone(f); go('editor'); }),
+          can('forms') && btn('Duplicate', act(async () => {
+            const dup = structuredClone(f); delete dup.id; dup.title += ' (copy)'; dup.active = false;
+            dup.fields.forEach(x => delete x.id);
+            await api('/api/admin/forms', 'POST', dup); toast('Duplicated as a closed draft'); await refresh();
+          })),
+          can('forms') && btn(f.active ? 'Close' : 'Open', act(async () => { await api(`/api/admin/forms/${f.id}`, 'PUT', { ...f, active: !f.active }); toast(f.active ? 'Form closed' : 'Form is live'); await refresh(); })),
+          can('forms') && btn('Delete', confirmAct(`Delete "${f.title}" and all ${state.counts[f.id] || 0} responses? This cannot be undone.`, async () => {
+            await api(`/api/admin/forms/${f.id}`, 'DELETE'); toast('Form deleted'); await refresh();
+          }), 'btn-danger'))))
+        : h('p', { class: 'empty' }, 'No forms yet — create your first one.'));
+  },
+
+  editor() {
+    const f = current;
+    const list = h('div');
+    const draw = () => list.replaceChildren(...f.fields.map((fd, i) => {
+      const hasOpts = ['select', 'radio', 'checkbox'].includes(fd.type);
+      const move = d => () => { [f.fields[i], f.fields[i + d]] = [f.fields[i + d], f.fields[i]]; draw(); };
+      return h('div', { class: 'frow' },
+        h('label', { class: 'lbl' }, h('span', {}, h('span', { class: 'num' }, `Q${i + 1} `), 'Question'),
+          h('input', { value: fd.label, required: true, maxlength: 300, oninput: e => fd.label = e.target.value })),
+        h('label', { class: 'lbl' }, 'Answer type',
+          h('select', { onchange: e => { fd.type = e.target.value; draw(); } },
+            FIELD_TYPES.map(([v, t]) => h('option', { value: v, selected: fd.type === v }, t)))),
+        h('div', { class: 'row-actions' },
+          h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: fd.required, onchange: e => fd.required = e.target.checked }), 'Required'),
+          i > 0 && btn('Up', move(-1)),
+          i < f.fields.length - 1 && btn('Down', move(1)),
+          btn('Remove', () => { f.fields.splice(i, 1); draw(); }, 'btn-danger')),
+        hasOpts && h('label', { class: 'lbl wide' },
+          fd.type === 'checkbox' ? 'Options, comma separated (leave empty for a single “I agree” box)' : 'Options, comma separated',
+          h('input', { value: (fd.options || []).join(', '), placeholder: 'e.g. Music, Dance, Drama', required: fd.type !== 'checkbox',
+            oninput: e => fd.options = e.target.value.split(',').map(s => s.trim()).filter(Boolean) })),
+        h('label', { class: 'lbl wide' }, 'Helper text (optional, shown under the question)',
+          h('input', { value: fd.help, maxlength: 300, oninput: e => fd.help = e.target.value })));
+    }));
+    draw();
+    const save = h('button', { class: 'btn btn-crimson', type: 'submit' }, f.id ? 'Save changes' : 'Create form');
+    return h('form', { class: 'card', onsubmit: act(async e => {
+      e.preventDefault(); save.disabled = true;
+      try {
+        await api(f.id ? `/api/admin/forms/${f.id}` : '/api/admin/forms', f.id ? 'PUT' : 'POST', f);
+        toast(f.id ? 'Form saved' : 'Form created');
+        state = await api('/api/admin/state'); go('forms');
+      } finally { save.disabled = false; }
+    }) },
+      h('div', { class: 'bar' }, h('h2', { class: 'display' }, f.id ? 'Edit form' : 'New form'), btn('Cancel', () => go('forms'))),
+      h('div', { class: 'grid2' },
+        h('label', { class: 'lbl' }, 'Form title', h('input', { value: f.title, required: true, maxlength: 200, placeholder: 'e.g. Dance auditions 2026', oninput: e => f.title = e.target.value })),
+        h('label', { class: 'check' }, h('input', { type: 'checkbox', checked: f.active, onchange: e => f.active = e.target.checked }), 'Open — accepting responses'),
+        h('label', { class: 'lbl wide' }, 'About (first screen of the form, before the questions)', h('textarea', { value: f.description, maxlength: 3000, oninput: e => f.description = e.target.value })),
+        h('label', { class: 'lbl wide' }, 'Thank-you message (shown after submit)', h('input', { value: f.thanks, maxlength: 500, placeholder: 'Thanks! We will contact you soon.', oninput: e => f.thanks = e.target.value }))),
+      h('h3', {}, 'Questions'),
+      h('p', { class: 'hint' }, 'People see one question per screen, in this order. Editing a question keeps its old answers.'),
+      list,
+      h('div', { class: 'actions' }, btn('+ Add question', () => { f.fields.push({ label: '', type: 'text', required: false, options: [], help: '' }); draw(); list.lastChild.querySelector('input').focus(); }), save));
+  },
+
+  responses() {
+    const { form, responses } = current;
+    const rows = [...responses].reverse();
+    const search = h('input', { type: 'search', placeholder: 'Search responses…', 'aria-label': 'Search responses' });
+    const tbody = h('tbody');
+    const drawRows = () => {
+      const q = search.value.trim().toLowerCase();
+      const shown = q ? rows.filter(r => Object.values(r.data).join(' ').toLowerCase().includes(q)) : rows;
+      tbody.replaceChildren(...shown.map(r => h('tr', {},
+        h('td', {}, fmt(r.at)),
+        form.fields.map(f => h('td', {}, r.data[f.id] ?? '')),
+        h('td', {}, btn('Delete', confirmAct('Delete this response? This cannot be undone.', async () => {
+          await api(`/api/admin/forms/${form.id}/responses/${r.id}`, 'DELETE');
+          current = await api(`/api/admin/forms/${form.id}/responses`); state = await api('/api/admin/state'); render();
+        }), 'btn-danger')))));
+      if (!shown.length) tbody.replaceChildren(h('tr', {}, h('td', { colspan: form.fields.length + 2 }, 'No matching responses.')));
+    };
+    search.addEventListener('input', drawRows);
+    drawRows();
+    return h('div', {},
+      h('section', { class: 'card' },
+        h('div', { class: 'bar' }, h('h2', { class: 'display' }, form.title), btn('← All forms', () => go('forms'))),
+        h('div', { class: 'actions' },
+          h('span', { class: 'chip on' }, `${responses.length} responses`),
+          h('a', { class: 'btn btn-crimson', href: csvLink(form), download: '' }, 'Download for Excel (CSV)'),
+          can('connections') && btn('Google Sheets / live Excel →', () => go('connections')))),
+      h('section', { class: 'card' },
+        rows.length ? h('div', {},
+          h('div', { class: 'table-tools' }, search),
+          h('div', { class: 'table-wrap' }, h('table', {},
+            h('thead', {}, h('tr', {}, h('th', {}, 'Submitted'), form.fields.map(f => h('th', {}, f.label)), h('th', {}, h('span', { class: 'sr-only' }, 'Actions')))),
+            tbody)))
+          : h('p', { class: 'empty' }, 'No responses yet. Share the form link!')));
+  },
+
+  connections() {
+    const script = `function doPost(e) {
+  var data = JSON.parse(e.postData.contents);
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  if (sheet.getLastRow() === 0) sheet.appendRow(data.headers);
+  data.rows.forEach(function (row) { sheet.appendRow(row); });
+  return ContentService.createTextOutput('ok');
+}`;
+    return h('div', {},
+      h('section', { class: 'card' },
+        h('div', { class: 'bar' }, h('h2', { class: 'display' }, 'Excel & Google Sheets')),
+        h('p', { class: 'hint' }, 'All responses always stay in this admin panel. These connections also copy them into your spreadsheets.'),
+        h('details', {}, h('summary', { style: 'cursor:pointer;font-weight:700' }, 'One-time setup for Google Sheets auto-sync (2 minutes)'),
+          h('ol', { class: 'steps' },
+            h('li', {}, 'Create a new Google Sheet → Extensions → Apps Script.'),
+            h('li', {}, 'Delete everything there and paste this script:'),
+            h('li', { style: 'list-style:none' }, h('pre', {}, script), btn('Copy script', copy(script, 'Script copied'))),
+            h('li', {}, 'Deploy → New deployment → type "Web app" → Execute as: Me → Who has access: Anyone → Deploy (allow access).'),
+            h('li', {}, 'Copy the Web app URL (ends with /exec) and paste it below for the form you want. Every new response then lands in the sheet instantly.')))),
+      state.forms.length ? state.forms.map(f => {
+        const url = h('input', { value: f.sheetWebhook, placeholder: 'https://script.google.com/macros/s/…/exec', 'aria-label': `Google Sheets web app URL for ${f.title}` });
+        const st = f.sheetStatus;
+        return h('section', { class: 'card' },
+          h('div', { class: 'bar' }, h('h3', { style: 'margin:0' }, f.title), h('span', { class: 'chip on' }, `${state.counts[f.id] || 0} responses`)),
+          h('div', { class: 'conn' },
+            h('h3', {}, 'Google Sheets — auto-sync'),
+            f.sheetWebhook
+              ? h('p', { class: 'hint' }, h('span', { class: 'chip ' + (st?.ok ? 'on' : st ? 'bad' : 'off') }, st?.ok ? 'Connected' : st ? 'Error' : 'Not tested'), st ? `${st.msg} · ${fmt(st.at)}` : '')
+              : h('p', { class: 'hint' }, h('span', { class: 'chip off' }, 'Not connected'), 'Paste your Apps Script web app URL to start syncing.'),
+            h('div', { class: 'linkrow' }, url,
+              btn(f.sheetWebhook ? 'Update' : 'Connect', act(async e => {
+                const b = e.currentTarget; b.disabled = true;
+                try { const r = await api(`/api/admin/forms/${f.id}/sheet`, 'PUT', { url: url.value }); toast(r.msg, !r.ok); await refresh(); }
+                finally { b.disabled = false; }
+              }), 'btn-crimson'),
+              f.sheetWebhook && btn('Test', act(async () => { const r = await api(`/api/admin/forms/${f.id}/sheet-test`, 'POST'); toast(r.msg, !r.ok); await refresh(); })),
+              f.sheetWebhook && btn('Send all past responses', confirmAct('Send every existing response to the sheet now? Use this once, on an empty sheet, to avoid duplicates.', async () => {
+                const r = await api(`/api/admin/forms/${f.id}/sheet-sync`, 'POST'); toast(r.msg, !r.ok); await refresh();
+              })),
+              f.sheetWebhook && btn('Disconnect', confirmAct('Stop sending responses to this sheet?', async () => {
+                await api(`/api/admin/forms/${f.id}/sheet`, 'PUT', { url: '' }); toast('Disconnected'); await refresh();
+              }), 'btn-danger'))),
+          h('div', { class: 'conn' },
+            h('h3', {}, 'Excel — live link'),
+            h('p', { class: 'hint' }, 'Excel: Data → Get Data → From Web → paste the link → Load. Click Refresh All any time for new responses. Google Sheets can also use =IMPORTDATA("link").'),
+            h('div', { class: 'linkrow' },
+              h('input', { readonly: true, value: csvLink(f), 'aria-label': `Live CSV link for ${f.title}`, onclick: e => e.target.select() }),
+              btn('Copy link', copy(csvLink(f), 'Excel link copied'), 'btn-crimson'),
+              btn('Copy IMPORTDATA formula', copy(`=IMPORTDATA("${csvLink(f)}")`, 'Formula copied')),
+              h('a', { class: 'btn btn-line', href: csvLink(f), download: '' }, 'Download CSV'),
+              btn('Reset link', confirmAct('Create a new private link? The old link stops working everywhere it is used.', async () => {
+                await api(`/api/admin/forms/${f.id}/rotate-key`, 'POST'); toast('New link created'); await refresh();
+              }), 'btn-danger')),
+            h('p', { class: 'hint' }, 'Keep this link private — anyone who has it can read the responses.')));
+      }) : h('section', { class: 'card' }, h('p', { class: 'empty' }, 'Create a form first.')));
+  },
+
+  news() {
+    const draft = { title: '', date: new Date().toISOString().slice(0, 10), body: '' };
+    let editing = null;
+    const title = h('input', { required: true, maxlength: 200, placeholder: 'e.g. Annual fest auditions on Friday', oninput: e => draft.title = e.target.value });
+    const date = h('input', { type: 'date', value: draft.date, oninput: e => draft.date = e.target.value });
+    const body = h('textarea', { maxlength: 4000, placeholder: 'Details, venue, time…', oninput: e => draft.body = e.target.value });
+    const heading = h('h2', { class: 'display' }, 'New announcement');
+    const submit = h('button', { class: 'btn btn-crimson', type: 'submit' }, 'Post announcement');
+    const cancel = btn('Cancel edit', () => render());
+    cancel.hidden = true;
+    const startEdit = a => {
+      editing = a.id; Object.assign(draft, { title: a.title, date: a.date, body: a.body || '' });
+      title.value = a.title; date.value = a.date; body.value = a.body || '';
+      heading.textContent = 'Edit announcement'; submit.textContent = 'Save changes'; cancel.hidden = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' }); title.focus();
+    };
+    return h('div', {},
+      h('form', { class: 'card', onsubmit: act(async e => {
+        e.preventDefault();
+        await api(editing ? `/api/admin/announcements/${editing}` : '/api/admin/announcements', editing ? 'PUT' : 'POST', draft);
+        toast(editing ? 'Announcement updated' : 'Announcement posted'); await refresh();
+      }) },
+        h('div', { class: 'bar' }, heading),
+        h('div', { class: 'grid2' },
+          h('label', { class: 'lbl' }, 'Title', title),
+          h('label', { class: 'lbl' }, 'Date', date),
+          h('label', { class: 'lbl wide' }, 'Details (optional)', body)),
+        h('div', { class: 'actions', style: 'margin-top:14px' }, submit, cancel)),
+      h('section', { class: 'card' },
+        h('div', { class: 'bar' }, h('h2', { class: 'display' }, 'Posted')),
+        h('p', { class: 'hint' }, 'The top one also appears in the glass card on the homepage.'),
+        state.announcements.length ? state.announcements.map(a => h('div', { class: 'item' },
+          h('div', {}, h('strong', {}, a.title), h('small', {}, a.date + (a.body ? ' · ' + a.body.slice(0, 90) : ''))),
+          h('div', { class: 'actions' },
+            btn('Edit', () => startEdit(a)),
+            btn('Delete', confirmAct(`Delete "${a.title}"?`, async () => {
+              await api(`/api/admin/announcements/${a.id}`, 'DELETE'); toast('Deleted'); await refresh();
+            }), 'btn-danger'))))
+          : h('p', { class: 'empty' }, 'Nothing posted yet.')));
+  },
+
+  photos() {
+    const files = h('input', { type: 'file', accept: 'image/png,image/jpeg,image/webp,image/gif', multiple: true, required: true });
+    const caption = h('input', { maxlength: 200, placeholder: 'e.g. Annual fest 2026' });
+    const up = h('button', { class: 'btn btn-crimson', type: 'submit' }, 'Upload');
+    return h('div', {},
+      h('form', { class: 'card', onsubmit: act(async e => {
+        e.preventDefault(); up.disabled = true;
+        try {
+          const list = [...files.files];
+          for (const [i, file] of list.entries()) {
+            up.textContent = `Uploading ${i + 1}/${list.length}…`;
+            await api('/api/admin/photos', 'POST', { dataUrl: await shrink(file), caption: caption.value });
+          }
+          toast(`${list.length} photo${list.length > 1 ? 's' : ''} added`); await refresh();
+        } finally { up.disabled = false; up.textContent = 'Upload'; }
+      }) },
+        h('div', { class: 'bar' }, h('h2', { class: 'display' }, 'Add photos')),
+        h('div', { class: 'grid2' }, h('label', { class: 'lbl' }, 'Choose photos', files), h('label', { class: 'lbl' }, 'Caption (optional, applies to all)', caption)),
+        h('div', { class: 'actions', style: 'margin-top:14px' }, up)),
+      h('section', { class: 'card' },
+        h('div', { class: 'bar' }, h('h2', { class: 'display' }, 'Gallery')),
+        h('p', { class: 'hint' }, 'The first photo is shown big on the homepage. Use “Make first” to choose it.'),
+        state.photos.length ? h('div', { class: 'photos' }, state.photos.map((p, i) => {
+          const cap = h('input', { value: p.caption, maxlength: 200, 'aria-label': 'Caption', placeholder: 'Caption' });
+          return h('figure', {},
+            h('img', { src: p.src, alt: p.caption || 'Club photo', loading: 'lazy' }),
+            h('figcaption', {}, cap,
+              h('div', { class: 'actions' },
+                btn('Save', act(async () => { await api(`/api/admin/photos/${p.id}`, 'PUT', { caption: cap.value }); toast('Caption saved'); await refresh(); })),
+                i > 0 && btn('Make first', act(async () => { await api(`/api/admin/photos/${p.id}`, 'PUT', { toFront: true }); toast('Moved to the front'); await refresh(); })),
+                btn('Delete', confirmAct('Delete this photo?', async () => { await api(`/api/admin/photos/${p.id}`, 'DELETE'); toast('Photo deleted'); await refresh(); }), 'btn-danger'))));
+        }))
+          : h('p', { class: 'empty' }, 'No photos yet.')));
+  },
+
+  async team() {
+    const users = await api('/api/admin/users');
+    const editor = u => {
+      const d = { name: u?.name || '', username: u?.username || '', password: '', perms: [...(u?.perms || ROLES['Editor'])] };
+      const boxes = h('div', { class: 'perms' });
+      const role = h('select', { onchange: e => { if (ROLES[e.target.value]) { d.perms = [...ROLES[e.target.value]]; drawBoxes(); } } },
+        [...Object.keys(ROLES), 'Custom'].map(r => h('option', { value: r, selected: roleOf(d.perms) === r }, r)));
+      const drawBoxes = () => boxes.replaceChildren(...state.perms.map(p => h('label', { class: 'check' },
+        h('input', { type: 'checkbox', checked: d.perms.includes(p), onchange: e => { d.perms = e.target.checked ? [...d.perms, p] : d.perms.filter(x => x !== p); role.value = roleOf(d.perms); } }), PERM_LABELS[p])));
+      drawBoxes();
+      return h('form', { class: 'card', onsubmit: act(async e => {
+        e.preventDefault();
+        await api(u ? `/api/admin/users/${u.id}` : '/api/admin/users', u ? 'PUT' : 'POST', d);
+        toast(u ? 'Member updated' : 'Member added — share their username and password with them'); await refresh();
+      }) },
+        h('div', { class: 'bar' }, h('h2', { class: 'display' }, u ? `Edit ${u.name}` : 'Add a team member'), u && btn('Cancel', () => render())),
+        h('div', { class: 'grid2' },
+          h('label', { class: 'lbl' }, 'Name', h('input', { required: true, maxlength: 80, value: d.name, oninput: e => d.name = e.target.value })),
+          h('label', { class: 'lbl' }, 'Username (for login)', h('input', { required: true, maxlength: 40, value: d.username, autocomplete: 'off', oninput: e => d.username = e.target.value })),
+          h('label', { class: 'lbl' }, u ? 'New password (leave empty to keep)' : 'Password (min 8 characters)', h('input', { type: 'password', minlength: 8, required: !u, autocomplete: 'new-password', oninput: e => d.password = e.target.value })),
+          h('label', { class: 'lbl' }, 'Role', role),
+          h('div', { class: 'lbl wide' }, 'What they can see and change', boxes)),
+        h('div', { class: 'actions', style: 'margin-top:14px' }, h('button', { class: 'btn btn-crimson', type: 'submit' }, u ? 'Save member' : 'Add member')));
+    };
+    const slot = h('div', {}, editor());
+    return h('div', {},
+      h('section', { class: 'card' },
+        h('div', { class: 'bar' }, h('h2', { class: 'display' }, 'Team & roles')),
+        h('p', { class: 'hint' }, 'Give other people their own login. Their role decides which tabs they see and what they can change.'),
+        users.map(u => h('div', { class: 'item' },
+          h('div', {}, h('strong', {}, u.name), h('span', { class: 'chip on' }, roleOf(u.perms)), u.id === state.me.id && h('span', { class: 'chip off' }, 'You'),
+            h('small', {}, `@${u.username} · ${u.perms.map(p => PERM_LABELS[p]).join(', ')}`)),
+          h('div', { class: 'actions' },
+            btn('Edit', () => { slot.replaceChildren(editor(u)); slot.scrollIntoView({ behavior: 'smooth' }); }),
+            u.id !== state.me.id && btn('Remove', confirmAct(`Remove ${u.name}? They will be logged out immediately.`, async () => {
+              await api(`/api/admin/users/${u.id}`, 'DELETE'); toast('Member removed'); await refresh();
+            }), 'btn-danger'))))),
+      slot);
+  },
+
+  account() {
+    const cur = h('input', { type: 'password', required: true, autocomplete: 'current-password' });
+    const pw = h('input', { type: 'password', required: true, minlength: 8, autocomplete: 'new-password' });
+    const pw2 = h('input', { type: 'password', required: true, minlength: 8, autocomplete: 'new-password' });
+    return h('div', {},
+      h('section', { class: 'card' },
+        h('div', { class: 'bar' }, h('h2', { class: 'display' }, 'My account')),
+        h('p', {}, h('b', {}, state.me.name), ` · @${state.me.username} · `, h('span', { class: 'chip on' }, roleOf(state.me.perms))),
+        h('p', { class: 'hint' }, 'You can: ' + state.me.perms.map(p => PERM_LABELS[p]).join(', ') + '.')),
+      h('form', { class: 'card', onsubmit: act(async e => {
+        e.preventDefault();
+        if (pw.value !== pw2.value) throw new Error('New passwords do not match');
+        await api('/api/admin/me/password', 'POST', { current: cur.value, password: pw.value });
+        toast('Password changed'); await start();
+      }) },
+        h('div', { class: 'bar' }, h('h2', { class: 'display' }, 'Change password')),
+        h('div', { class: 'grid2' },
+          h('label', { class: 'lbl wide' }, 'Current password', cur),
+          h('label', { class: 'lbl' }, 'New password (min 8)', pw),
+          h('label', { class: 'lbl' }, 'Repeat new password', pw2)),
+        h('div', { class: 'actions', style: 'margin-top:14px' }, h('button', { class: 'btn btn-crimson', type: 'submit' }, 'Change password'))));
+  },
+};
+
+// Resize big phone photos to max 1800px WebP before upload (keeps the site fast).
+async function shrink(file) {
+  if (file.type === 'image/gif') return new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = no; r.readAsDataURL(file); });
+  const img = await createImageBitmap(file);
+  const k = Math.min(1, 1800 / Math.max(img.width, img.height));
+  const c = document.createElement('canvas');
+  c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+  return c.toDataURL('image/webp', .85);
+}
+
+token ? start() : showLogin();
+</script>
+</body>
+</html>

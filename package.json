@@ -1,0 +1,6 @@
+{
+  "name": "cultural-section",
+  "private": true,
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
