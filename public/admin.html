@@ -201,6 +201,8 @@ function render() {
 
 // ---------- views ----------
 const FIELD_TYPES = [['text', 'Short text'], ['textarea', 'Long text'], ['email', 'Email'], ['tel', 'Phone'], ['number', 'Number'], ['date', 'Date'], ['radio', 'Pick one'], ['checkbox', 'Pick many / agree box'], ['select', 'Dropdown (pick one)']];
+// Where to keep the crop when a photo is cut to a tile: faces are usually in the upper part.
+const FOCUS = [['50% 12%', 'Top (heads)'], ['50% 30%', 'Upper (faces)'], ['50% 50%', 'Center'], ['50% 80%', 'Bottom']];
 const formLink = f => `${location.origin}/form?f=${f.id}`;
 const csvLink = f => `${location.origin}/export/${f.id}.csv?key=${f.exportKey}`;
 const copy = (text, msg = 'Copied') => act(async () => { await navigator.clipboard.writeText(text); toast(msg); });
@@ -425,7 +427,9 @@ const views = {
           const list = [...files.files];
           for (const [i, file] of list.entries()) {
             up.textContent = `Uploading ${i + 1}/${list.length}…`;
-            await api('/api/admin/photos', 'POST', { dataUrl: await shrink(file), caption: caption.value });
+            const dataUrl = await shrink(file);
+            if (dataUrl.length > 4e6) throw new Error(`"${file.name}" is too big (limit ≈ 3 MB). Pick a smaller photo or GIF.`);
+            await api('/api/admin/photos', 'POST', { dataUrl, caption: caption.value });
           }
           toast(`${list.length} photo${list.length > 1 ? 's' : ''} added`); await refresh();
         } finally { up.disabled = false; up.textContent = 'Upload'; }
@@ -438,9 +442,13 @@ const views = {
         h('p', { class: 'hint' }, 'The first photo is shown big on the homepage. Use “Make first” to choose it.'),
         state.photos.length ? h('div', { class: 'photos' }, state.photos.map((p, i) => {
           const cap = h('input', { value: p.caption, maxlength: 200, 'aria-label': 'Caption', placeholder: 'Caption' });
+          const img = h('img', { src: p.src, alt: p.caption || 'Club photo', loading: 'lazy', style: `object-position:${p.pos || '50% 30%'}` });
+          const focus = h('select', { 'aria-label': 'Which part of the photo to keep when it is cropped', onchange: act(async e => {
+            await api(`/api/admin/photos/${p.id}`, 'PUT', { pos: e.target.value }); img.style.objectPosition = e.target.value; toast('Framing saved');
+          }) }, FOCUS.map(([v, t]) => h('option', { value: v, selected: v === (p.pos || '50% 30%') }, t)));
           return h('figure', {},
-            h('img', { src: p.src, alt: p.caption || 'Club photo', loading: 'lazy' }),
-            h('figcaption', {}, cap,
+            img,
+            h('figcaption', {}, cap, h('label', { class: 'lbl' }, 'Keep in frame', focus),
               h('div', { class: 'actions' },
                 btn('Save', act(async () => { await api(`/api/admin/photos/${p.id}`, 'PUT', { caption: cap.value }); toast('Caption saved'); await refresh(); })),
                 i > 0 && btn('Make first', act(async () => { await api(`/api/admin/photos/${p.id}`, 'PUT', { toFront: true }); toast('Moved to the front'); await refresh(); })),
@@ -501,7 +509,8 @@ const views = {
       h('form', { class: 'card', onsubmit: act(async e => {
         e.preventDefault();
         if (pw.value !== pw2.value) throw new Error('New passwords do not match');
-        await api('/api/admin/me/password', 'POST', { current: cur.value, password: pw.value });
+        const r = await api('/api/admin/me/password', 'POST', { current: cur.value, password: pw.value });
+        token = r.token; store.set(token); // old tokens stop working after a password change
         toast('Password changed'); await start();
       }) },
         h('div', { class: 'bar' }, h('h2', { class: 'display' }, 'Change password')),

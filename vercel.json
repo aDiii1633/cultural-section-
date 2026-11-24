@@ -1,0 +1,13 @@
+{
+  "framework": null,
+  "buildCommand": "",
+  "outputDirectory": "public",
+  "functions": { "api/index.js": { "maxDuration": 30 } },
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/index.js" },
+    { "source": "/export/:path*", "destination": "/api/index.js" },
+    { "source": "/photo/:path*", "destination": "/api/index.js" },
+    { "source": "/form", "destination": "/form.html" },
+    { "source": "/admin", "destination": "/admin.html" }
+  ]
+}

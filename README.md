@@ -35,7 +35,18 @@ ADMIN_PASSWORD=your-strong-password npm start                # Linux / Mac / hos
 - **Photos** — upload (auto-resized), edit captions, choose the big first photo, delete.
 - **Team & roles** — give other people their own login. Roles: Owner, Editor, Data manager, Content manager, Responses viewer, or custom permissions. The server enforces every permission.
 
-## Data
+## Deploy on Vercel
+
+Vercel has no permanent disk, so the live site stores everything in a **Postgres database (Neon)**. Localhost keeps using `data/db.json` — nothing to set up.
+
+1. Vercel → your project → **Storage** → **Create Database** → **Neon (Postgres)** → connect it to the project (this adds `DATABASE_URL` automatically).
+2. Project → **Settings → Environment Variables** → add `ADMIN_PASSWORD` = your own strong password (used once, to create the first `admin` login).
+3. **Deployments → Redeploy**. Open the site: forms, photos, announcements and `/admin` all work. The tables are created on the first visit.
+
+If you see “Database not connected”, step 1 is missing. Photos uploaded in admin are stored in the same database (keep each under ≈3 MB).
+Google Sheets sync and the Excel link work the same on Vercel; use your real `https://…vercel.app` address in the links.
+
+## Data (local)
 
 - `data/db.json` — forms, responses, users (hashed passwords), announcements. **Back it up.**
 - `public/uploads/` — photos uploaded from the admin panel.
