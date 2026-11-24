@@ -60,7 +60,12 @@
 
     .intro .logo { width: clamp(110px, 16vw, 150px); border-radius: 50%; background: #fff; padding: 4px; margin-bottom: 26px; box-shadow: 0 20px 50px rgba(58,6,17,.4); }
     .intro h1 { margin: 0 0 18px; font-size: clamp(2.4rem, 7vw, 5rem); }
-    .intro p { font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: rgba(255,255,255,.9); max-width: 60ch; white-space: pre-line; margin: 0; }
+    .intro p { font-size: clamp(.98rem, 1.15vw, 1.1rem); line-height: 1.65; color: rgba(255,255,255,.9); max-width: 60ch; white-space: pre-line; margin: 0; }
+    .intro p + p { margin-top: 0; }
+    .note { margin-top: 26px; max-width: 60ch; padding: 18px 20px; border-radius: 18px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.3); }
+    .note b { display: block; color: var(--saffron); font-family: var(--display); font-stretch: 112%; font-weight: 800; text-transform: uppercase; letter-spacing: .02em; margin-bottom: 8px; }
+    .note p { font-size: 1rem; margin: 0; }
+    .q.long { font-size: clamp(1.3rem, 3vw, 2rem); line-height: 1.25; }
     .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
     .meta span { background: rgba(255,255,255,.14); border-radius: 999px; padding: 8px 14px; font-size: 14px; font-weight: 600; }
     .chooser { display: grid; gap: 12px; margin-top: 26px; }
@@ -201,6 +206,7 @@ function introView() {
     h('img', { class: 'logo', src: 'logo.jpg', alt: '' }),
     h('h1', { class: 'display' }, form.title),
     form.description && h('p', {}, form.description),
+    form.note && h('aside', { class: 'note' }, h('b', {}, 'A small note for you'), h('p', {}, form.note)),
     h('div', { class: 'meta' }, h('span', {}, `${total()} questions`), h('span', {}, `~${Math.max(1, Math.round(total() * 0.3))} min`), h('span', {}, 'One question at a time')),
     h('div', { class: 'actions' },
       h('button', { class: 'btn btn-saffron', type: 'button', 'data-autofocus': true, onclick: () => go(1) }, resumed ? 'Continue where you left off →' : 'Start →'),
@@ -257,7 +263,7 @@ function questionView(f) {
   const last = n === total();
   const view = h('section', { class: 'step', 'data-err': '' },
     h('div', { class: 'eyebrow' }, h('span', { class: 'n' }, String(n)), '→'),
-    h('h1', { class: 'q' }, f.label, f.required && h('span', { class: 'req', 'aria-label': 'required' }, ' *')),
+    h('h1', { class: 'q' + (f.label.length > 70 ? ' long' : '') }, f.label, f.required &&h('span', { class: 'req', 'aria-label': 'required' }, ' *')),
     h('p', { class: 'help' }, f.help || (isMulti(f) ? 'Choose as many as you like.' : isChoice(f) ? 'Choose one.' : '')),
     h('div', { class: 'answer' }, control),
     err,
