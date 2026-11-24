@@ -23,7 +23,10 @@ $env:ADMIN_PASSWORD = "your-strong-password"; npm start     # PowerShell
 ADMIN_PASSWORD=your-strong-password npm start                # Linux / Mac / hosting
 ```
 
-`ADMIN_PASSWORD` is only used the very first time, to create the owner account.
+`ADMIN_USER` (optional, default `admin`) and `ADMIN_PASSWORD` control the **main owner login**. Change either one
+(locally or in Vercel → Settings → Environment Variables) and restart / **redeploy**, and the login follows — also the way
+back in if you forget the password. A password changed inside the panel is kept until you change the env values again.
+Usernames are not case-sensitive; extra team members (Admin → Team & roles) are never touched by these variables.
 
 ## Admin panel
 
@@ -40,7 +43,7 @@ ADMIN_PASSWORD=your-strong-password npm start                # Linux / Mac / hos
 Vercel has no permanent disk, so the live site stores everything in a **Postgres database (Neon)**. Localhost keeps using `data/db.json` — nothing to set up.
 
 1. Vercel → your project → **Storage** → **Create Database** → **Neon (Postgres)** → connect it to the project (this adds `DATABASE_URL` automatically).
-2. Project → **Settings → Environment Variables** → add `ADMIN_PASSWORD` = your own strong password (used once, to create the first `admin` login).
+2. Project → **Settings → Environment Variables** → add `ADMIN_USER` (e.g. `admin`) and `ADMIN_PASSWORD` (your own strong password) for Production. Env changes only apply to a **new deployment**, so redeploy after every change.
 3. **Deployments → Redeploy**. Open the site: forms, photos, announcements and `/admin` all work. The tables are created on the first visit.
 
 If you see “Database not connected”, step 1 is missing. Photos uploaded in admin are stored in the same database (keep each under ≈3 MB).

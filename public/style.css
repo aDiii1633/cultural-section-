@@ -209,7 +209,9 @@ a.glass:hover { translate: 0 -6px; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
-  .links { display: none; }
+  .nav { flex-wrap: wrap; }
+  .links { order: 3; width: 100%; justify-content: center; flex-wrap: wrap; }
+  .gallery figure:last-child:nth-child(even) { grid-column: span 2; }
   .features, .about { grid-template-columns: 1fr; }
   .hop { display: none; }
   .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -222,7 +224,7 @@ a.glass:hover { translate: 0 -6px; }
   .stage { padding-bottom: 250px; }
   .g1 { left: 4%; bottom: 60px; width: 140px; }
   .g2 { right: 6%; top: auto; bottom: 70px; width: 140px; }
-  .s1 { right: 2%; top: -12%; width: 80px; }
+  .s1 { display: none; }
   .s2 { display: none; }
   .badge { right: 50%; translate: 50% 0; bottom: -24px; width: 104px; }
   .badge .ring text { font-size: 18px; }

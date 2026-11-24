@@ -24,7 +24,7 @@
     .progress { height: 4px; background: rgba(255,255,255,.18); }
     .progress span { display: block; height: 100%; width: 0; background: var(--saffron); transition: width .5s var(--ease); }
 
-    .fstage { flex: 1; display: grid; place-items: center; padding: clamp(32px, 6vw, 72px) var(--gutter); overflow: hidden; }
+    .fstage { flex: 1; display: grid; place-items: center; padding: clamp(32px, 6vw, 72px) var(--gutter); overflow: clip; }
     .step { width: min(100%, 760px); }
     .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; color: var(--saffron); font-size: 15px; margin-bottom: 14px; }
     .eyebrow .n { display: grid; place-items: center; min-width: 32px; height: 32px; padding: 0 8px; border-radius: 10px; background: var(--saffron); color: var(--ink); font-family: var(--display); font-stretch: 125%; font-weight: 900; font-size: 13px; }
@@ -74,7 +74,11 @@
     .review b { font-weight: 600; opacity: .85; font-size: 14px; }
     .review span { text-align: right; font-weight: 700; word-break: break-word; }
     .review button { all: unset; cursor: pointer; font-size: 13px; text-decoration: underline; color: var(--saffron); margin-left: 10px; }
-    @media (max-width: 640px) { .top .brand-tag { display: none; } .hint { display: none; } }
+    @media (max-width: 640px) {
+      .top .brand-tag { display: none; } .hint { display: none; }
+      /* keep OK / Back reachable on long option lists */
+      .actions { position: sticky; bottom: 0; margin-inline: calc(-1 * var(--gutter)); padding: 14px var(--gutter) 16px; background: linear-gradient(to bottom, rgba(193,17,47,0), var(--crimson) 35%); z-index: 5; }
+    }
   </style>
 </head>
 <body>
